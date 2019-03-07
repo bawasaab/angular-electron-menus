@@ -1,11 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Router } from "@angular/router"
+import { ElectronService } from 'ngx-electron';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
 
-  constructor() { }
+  private shell;
+
+  constructor(
+    private _electronService: ElectronService,
+    private ngZone: NgZone,
+    private router: Router
+  ) {
+
+    this.shell = this._electronService.shell;
+  }
 
   getFileSubmenu() {
 
@@ -53,7 +64,7 @@ export class MenuService {
     return [
       {
         label: 'Learn More',
-        click () { this.shell.openExternalSync('https://electronjs.org') }
+        click: () => { this.shell.openExternalSync('https://electronjs.org') }
       }
     ]
   }
@@ -62,16 +73,17 @@ export class MenuService {
 
     return [
       {
-        label: 'Masters',
-        click() {
-          alert('Alert masters is clicked');
+        label: 'Main Masters',
+        click: () => {
+          this.ngZone.run(() => this.router.navigate(['/masters/main']));
         }
       },
       // { type: 'seprator' },
       {
         label: 'Test Master',
-        click() {
-          alert('Alert test master is clicked2');
+        click: () => {
+          alert('Test master cliked');
+          // this.ngZone.run(() => this.router.navigate(['/masters/main']));
         }
       }
     ]
@@ -82,15 +94,17 @@ export class MenuService {
     return [
       {
         label: 'Reports',
-        click() {
-          alert('Alert report is clicked');
+        click: () => {
+          alert('Reports cliked');
+          // this.ngZone.run(() => this.router.navigate(['/masters/main']));
         }
       },
       // { type: 'seprator' },
       {
         label: 'Test Report Master',
-        click() {
-          alert('Alert test Report master is clicked2');
+        click: () => {
+          alert('Test Report Master');
+          // this.ngZone.run(() => this.router.navigate(['/masters/main']));
         }
       }
     ]
